@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  local_llm_gguf:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    image: local_llm_gguf:latest
+    container_name: local_llm_gguf
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - "8000:8000"
+    volumes:
+      - D:/models/miqu/:/app/models/model
+      - F:/Llama-2-70B-GPTQ/:/app/models/tokenizer
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
